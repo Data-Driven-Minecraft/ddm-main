@@ -1,35 +1,33 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "ddm",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Data Driven Minecraft",
+  "description": "A collaborative effort between the users of the 'Minecraft Commands' discord server!",
   "authors": [
-    "Me!"
+    "Volved",
+    "add your name here..."
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
+    "homepage": "https://discord.gg/QAFXFtZ",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
 
   "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/ddm/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleModKt::init"
+      "com.github.mcc.ddm.MainKt::init"
     ]
   },
-  "mixins": [
-    "modid.mixins.json"
-  ],
   "depends": {
     "fabricloader": ">=0.8.7",
     "fabric": "*",
     "fabric-language-kotlin": "*",
-    "minecraft": "1.16.x"
+    "minecraft": "1.16.5"
   },
   "suggests": {
     "flamingo": "*"

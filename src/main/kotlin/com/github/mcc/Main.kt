@@ -1,4 +1,4 @@
-package net.fabricmc.example
+package com.github.mcc.ddm
 
 // For support join https://discord.gg/v6v4pMv
 
