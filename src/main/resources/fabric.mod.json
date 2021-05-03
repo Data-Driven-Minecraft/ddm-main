@@ -7,6 +7,7 @@
   "description": "A collaborative effort between the users of the 'Minecraft Commands' discord server!",
   "authors": [
     "Volved",
+    "lolad",
     "add your name here..."
   ],
   "contact": {
@@ -20,7 +21,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.github.mcc.ddm.MainKt::init"
+      "com.github.mcc.ddm.DataDriven"
     ]
   },
   "depends": {
