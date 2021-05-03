@@ -24,6 +24,9 @@
       "com.github.mcc.ddm.DataDriven"
     ]
   },
+  "mixins": [
+    "ddm.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.8.7",
     "fabric": "*",
