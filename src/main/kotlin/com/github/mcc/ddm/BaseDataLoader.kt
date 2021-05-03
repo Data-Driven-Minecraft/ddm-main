@@ -34,6 +34,11 @@ abstract class BaseDataLoader<E, T>(folder: String): JsonDataLoader(GSON, folder
     private val entries = mutableMapOf<Identifier, E>()
 
     /**
+     * The registered entries (to keep track of)
+     */
+    private val registered = mutableMapOf<Identifier, T>()
+
+    /**
      * Load parsed files from a datapack into [entries].
      * @param loader A map of identifier (file path) to parsed JSON.
      * @param manager A resource manager for querying information about resources.
@@ -54,6 +59,14 @@ abstract class BaseDataLoader<E, T>(folder: String): JsonDataLoader(GSON, folder
     }
 
     /**
+     * Unregister all of this loader's entries.
+     * @param server The server to unregister on.
+     */
+    fun unregisterAll(server: MinecraftServer) {
+        for ((ident, entry) in registered) unregister(server, ident, entry)
+    }
+
+    /**
      * Read to create the data type from a [JsonElement]
      * @param json The parsed json
      */
@@ -66,4 +79,6 @@ abstract class BaseDataLoader<E, T>(folder: String): JsonDataLoader(GSON, folder
      * @param data The data class representing its parsed properties.
      */
     abstract fun register(server: MinecraftServer, ident: Identifier, data: E)
+
+    abstract fun unregister(server: MinecraftServer, ident: Identifier, entry: T)
 }
