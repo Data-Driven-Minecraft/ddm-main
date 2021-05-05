@@ -18,16 +18,23 @@ class ItemDataLoader: BaseDataLoader<ItemDataEntry, CustomItem>("items") {
             get() = "Could not parse ident $ident"
     }
 
+    private fun JsonObject.event(name: String): Identifier? {
+        return get(name)?.let {Identifier.tryParse(it.asString) ?: throw IdentifierParseException(it.asString)}
+    }
+
     override fun read(json: JsonObject): ItemDataEntry {
         val data = ItemDataEntry()
         json.getAsJsonObject("events")?.let { events ->
-            events.get("used")?.let {data.events.used = Identifier.tryParse(it.asString) ?: throw IdentifierParseException(it.asString)}
+            data.events.used = events.event("used")
+            data.events.attack = events.event("attack")
+            data.events.drop = events.event("drop")
         }
+        json.get("stack_size")?.let { data.settings.maxCount(it.asInt) }
         return data
     }
 
     override fun register(server: MinecraftServer, ident: Identifier, data: ItemDataEntry): CustomItem {
-        val item = CustomItem(data.settings, data.events)
+        val item = CustomItem(data)
         Registry.register(Registry.ITEM, ident, item)
         return item
     }

@@ -6,7 +6,8 @@
   "mixins": [
     "MinecraftServerMixin",
     "ServerResourceManagerMixin",
-    "AbstractBlockSettingsMixin"
+    "AbstractBlockSettingsMixin",
+    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
