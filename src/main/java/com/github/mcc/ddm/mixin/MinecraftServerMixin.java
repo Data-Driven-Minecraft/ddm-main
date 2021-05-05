@@ -36,20 +36,4 @@ abstract public class MinecraftServerMixin implements MinecraftServerDuck {
     public ServerResourceManager getServerResourceManager() {
         return serverResourceManager;
     }
-
-    @Inject(
-            method = "reloadResources(Ljava/util/Collection;)Ljava/util/concurrent/CompletableFuture;",
-            at = @At("TAIL")
-    )
-    void registerResources(Collection<String> datapacks, CallbackInfoReturnable<CompletableFuture<Void>> cir) {
-        ((ServerResourceManagerDuck) serverResourceManager).getBlockManager().registerAll((MinecraftServer) (Object) this);
-    }
-
-    @Inject(
-            method = "reloadResources(Ljava/util/Collection;)Ljava/util/concurrent/CompletableFuture;",
-            at = @At("HEAD")
-    )
-    void unregisterResources(Collection<String> datapacks, CallbackInfoReturnable<CompletableFuture<Void>> cir) {
-        ((ServerResourceManagerDuck) serverResourceManager).getBlockManager().unregisterAll((MinecraftServer) (Object) this);
-    }
 }

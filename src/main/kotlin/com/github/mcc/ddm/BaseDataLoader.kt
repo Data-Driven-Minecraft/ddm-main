@@ -2,11 +2,11 @@ package com.github.mcc.ddm
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import net.minecraft.loot.LootGsons
 import net.minecraft.resource.JsonDataLoader
 import net.minecraft.resource.ResourceManager
 import net.minecraft.server.MinecraftServer
-import net.minecraft.server.world.ServerWorld
 import net.minecraft.util.Identifier
 import net.minecraft.util.profiler.Profiler
 
@@ -46,7 +46,7 @@ abstract class BaseDataLoader<E, T>(folder: String): JsonDataLoader(GSON, folder
      */
     final override fun apply(loader: MutableMap<Identifier, JsonElement>, manager: ResourceManager, profiler: Profiler) {
         for ((ident, json) in loader) {
-            entries[ident] = read(json)
+            entries[ident] = read(json.asJsonObject)
         }
     }
 
@@ -55,7 +55,7 @@ abstract class BaseDataLoader<E, T>(folder: String): JsonDataLoader(GSON, folder
      * @param server The server to register on.
      */
     fun registerAll(server: MinecraftServer) {
-        for ((ident, data) in entries) register(server, ident, data)
+        for ((ident, data)  in entries) register(server, ident, data)
     }
 
     /**
@@ -70,7 +70,7 @@ abstract class BaseDataLoader<E, T>(folder: String): JsonDataLoader(GSON, folder
      * Read to create the data type from a [JsonElement]
      * @param json The parsed json
      */
-    abstract fun read(json: JsonElement): E
+    abstract fun read(json: JsonObject): E
 
     /**
      * Register this type's [T] from its identifier and data (at the end of reloading).
@@ -78,7 +78,7 @@ abstract class BaseDataLoader<E, T>(folder: String): JsonDataLoader(GSON, folder
      * @param ident The identifier of the item.
      * @param data The data class representing its parsed properties.
      */
-    abstract fun register(server: MinecraftServer, ident: Identifier, data: E)
+    abstract fun register(server: MinecraftServer, ident: Identifier, data: E): T
 
     abstract fun unregister(server: MinecraftServer, ident: Identifier, entry: T)
 }

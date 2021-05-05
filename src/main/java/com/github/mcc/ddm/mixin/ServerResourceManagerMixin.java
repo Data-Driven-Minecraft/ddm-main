@@ -2,6 +2,7 @@ package com.github.mcc.ddm.mixin;
 
 import com.github.mcc.ddm.block.BlockDataLoader;
 import com.github.mcc.ddm.duck.ServerResourceManagerDuck;
+import com.github.mcc.ddm.item.ItemDataLoader;
 import net.minecraft.resource.ReloadableResourceManager;
 import net.minecraft.resource.ServerResourceManager;
 import net.minecraft.server.MinecraftServer;
@@ -17,6 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerResourceManager.class)
 public abstract class ServerResourceManagerMixin implements ServerResourceManagerDuck {
     private BlockDataLoader blockManager;
+    private ItemDataLoader itemManager;
 
     @Accessor("resourceManager")
     abstract ReloadableResourceManager getResourceManager();
@@ -28,11 +30,19 @@ public abstract class ServerResourceManagerMixin implements ServerResourceManage
     private void init(CommandManager.RegistrationEnvironment registrationEnvironment, int i, CallbackInfo ci) {
         blockManager = new BlockDataLoader();
         getResourceManager().registerListener(blockManager);
+        itemManager = new ItemDataLoader();
+        getResourceManager().registerListener(itemManager);
     }
 
     @NotNull
     @Override
     public BlockDataLoader getBlockManager() {
         return blockManager;
+    }
+
+    @NotNull
+    @Override
+    public ItemDataLoader getItemManager() {
+        return itemManager;
     }
 }

@@ -9,7 +9,13 @@ class DataDriven: ModInitializer {
     override fun onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register {
             val srm = (it as MinecraftServerDuck).serverResourceManager as ServerResourceManagerDuck
-            srm.blockManager.registerAll(it)
+            it.reloadResources(it.dataPackManager.enabledNames)
+        }
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register { server, resourceManager, _ ->
+            (resourceManager as ServerResourceManagerDuck).itemManager.unregisterAll(server)
+            (resourceManager as ServerResourceManagerDuck).blockManager.unregisterAll(server)
+            (resourceManager as ServerResourceManagerDuck).itemManager.registerAll(server)
+            (resourceManager as ServerResourceManagerDuck).blockManager.registerAll(server)
         }
     }
 }

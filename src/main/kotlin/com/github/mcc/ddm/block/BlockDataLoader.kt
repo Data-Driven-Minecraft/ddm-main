@@ -3,7 +3,7 @@ package com.github.mcc.ddm.block
 import com.github.mcc.ddm.BaseDataLoader
 import com.github.mcc.ddm.duck.AbstractBlockSettingsDuck
 import com.github.mcc.ddm.extension.materialFromString
-import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.item.BlockItem
 import net.minecraft.server.MinecraftServer
@@ -14,8 +14,7 @@ import net.minecraft.util.registry.Registry
  * The data loader for blocks, which go in the pack's `blocks` folder.
  */
 class BlockDataLoader : BaseDataLoader<BlockDataEntry, CustomBlock>("blocks") {
-    override fun read(json: JsonElement): BlockDataEntry {
-        val json = json.asJsonObject
+    override fun read(json: JsonObject): BlockDataEntry {
         val data = BlockDataEntry()
         json.getAsJsonObject("properties")?.let {
             it.get("hardness")?.let {data.settings.hardness(it.asFloat)}
@@ -42,7 +41,7 @@ class BlockDataLoader : BaseDataLoader<BlockDataEntry, CustomBlock>("blocks") {
         return data
     }
 
-    override fun register(server: MinecraftServer, ident: Identifier, data: BlockDataEntry) {
+    override fun register(server: MinecraftServer, ident: Identifier, data: BlockDataEntry): CustomBlock {
         val block = CustomBlock(data)
         val item = BlockItem(block, FabricItemSettings())
         block.item = item
@@ -56,6 +55,7 @@ class BlockDataLoader : BaseDataLoader<BlockDataEntry, CustomBlock>("blocks") {
             ident,
             item
         )
+        return block
     }
 
     override fun unregister(server: MinecraftServer, ident: Identifier, entry: CustomBlock) {
