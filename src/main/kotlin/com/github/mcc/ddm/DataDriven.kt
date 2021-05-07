@@ -1,21 +1,29 @@
 package com.github.mcc.ddm
 
-import com.github.mcc.ddm.duck.MinecraftServerDuck
-import com.github.mcc.ddm.duck.ServerResourceManagerDuck
+import com.github.mcc.ddm.extension.blockManager
+import com.github.mcc.ddm.extension.eventManager
+import com.github.mcc.ddm.extension.itemManager
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
 
 class DataDriven: ModInitializer {
     override fun onInitialize() {
         ServerLifecycleEvents.SERVER_STARTED.register {
-            val srm = (it as MinecraftServerDuck).serverResourceManager as ServerResourceManagerDuck
             it.reloadResources(it.dataPackManager.enabledNames)
         }
         ServerLifecycleEvents.END_DATA_PACK_RELOAD.register { server, resourceManager, _ ->
-            (resourceManager as ServerResourceManagerDuck).itemManager.unregisterAll(server)
-            (resourceManager as ServerResourceManagerDuck).blockManager.unregisterAll(server)
-            (resourceManager as ServerResourceManagerDuck).itemManager.registerAll(server)
-            (resourceManager as ServerResourceManagerDuck).blockManager.registerAll(server)
+            try {
+                resourceManager.eventManager.unregisterAll(server)
+                resourceManager.eventManager.registerAll(server)
+
+                resourceManager.itemManager.unregisterAll(server)
+                resourceManager.itemManager.registerAll(server)
+
+                resourceManager.blockManager.unregisterAll(server)
+                resourceManager.blockManager.registerAll(server)
+            } catch (e: Exception) {
+                println("Failed to reload data driven parts:\n$e")
+            }
         }
     }
 }

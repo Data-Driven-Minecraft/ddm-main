@@ -2,6 +2,12 @@ package com.github.mcc.ddm.extension
 
 import net.minecraft.block.Material
 
+/**
+ * Generate a [Material] from a `String`.
+ * @param material the string representing the material
+ * @return The [Material] from the string's id.
+ * @throws Exception if the material does not represent a (hardcoded) material.
+ */
 fun materialFromString(material: String): Material {
     return when (material) {
         "air" ->  Material.AIR

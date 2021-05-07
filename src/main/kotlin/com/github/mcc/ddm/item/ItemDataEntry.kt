@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings
  * @see ItemDataLoader
  */
 class ItemDataEntry {
+    /**
+     * The [FabricItemSettings] to use on the outputted [CustomItem]
+     */
     val settings: FabricItemSettings = FabricItemSettings()
-    val events: ItemEvents = ItemEvents()
 }
